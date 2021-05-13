@@ -19,7 +19,7 @@ namespace Automation{
         public WebDriver(){
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--no-sandbox");
-            //options.AddArgument("--headless");
+            options.AddArgument("--headless");
             options.AddArgument("--disable-gpu");
             options.AddArgument("--disable-dev-shm-usage");
             /*var capabilities = new DesiredCapabilities();
