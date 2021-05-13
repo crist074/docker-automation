@@ -21,6 +21,7 @@ namespace Automation
         [ThreadStatic] private static ExtentTest test;
         private static ExtentReports extent;
         [ThreadStatic] private bool testPassed;
+        static string currentDirectory = $"{Environment.CurrentDirectory}\\..\\..\\..";
 
         [SetUp]
         public void Setup(){
@@ -89,7 +90,7 @@ namespace Automation
     
         public static IEnumerable<APITestCaseSource> GetTestData(){
             List<APITestCaseSource> sources = new List<APITestCaseSource>();
-            using (var reader = new StreamReader(@"E:\Github\docker-automation\tests\apitestcasesources.csv")){
+            using (var reader = new StreamReader(@$"{currentDirectory}\apitestcasesources.csv")){
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture)){
                     var records = csv.GetRecords<APITestCaseSource>();
                     foreach (APITestCaseSource record in records){
