@@ -56,7 +56,7 @@ namespace Automation
             //IWebDriver driver = driverSetup.driver;
             driver.Navigate().GoToUrl("http://the-internet.herokuapp.com/");
             driver.FindElement(By.XPath("//a[text()='Large & Deep DOM']")).Click();
-            string s = driver.FindElement(By.Id("sibling-43.1")).Text.Split('\r', StringSplitOptions.TrimEntries)[0];
+            string s = driver.FindElement(By.Id("sibling-43.1")).Text.Split('\r', StringSplitOptions.TrimEntries)[0].Split('\n')[0];
             Assert.AreEqual(s, "43.1");
             //driver.Quit();
 
