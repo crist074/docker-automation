@@ -30,6 +30,7 @@ namespace Automation{
             //driver = new ChromeDriver(currentDirectory, options);
             driver = new ChromeDriver(options);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Window.Size = new System.Drawing.Size(1920, 1080);
         }
     }
 }
