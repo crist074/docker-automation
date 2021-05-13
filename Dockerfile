@@ -3,7 +3,7 @@ FROM ruby:2.7.2
 ADD Gemfile /app/
 ADD Gemfile.lock /app/
 WORKDIR /app
-RUN bundle install
+RUN bundle-install
 ADD . /app
 
 EXPOSE 5000
