@@ -21,7 +21,7 @@ namespace Automation
         [ThreadStatic] private static ExtentTest test;
         private static ExtentReports extent;
         [ThreadStatic] private bool testPassed;
-        static string currentDirectory = $"{Environment.CurrentDirectory}\\..\\..\\..";
+        static string currentDirectory = @$"{Environment.CurrentDirectory}/../../..";
 
         [SetUp]
         public void Setup(){
