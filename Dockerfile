@@ -3,6 +3,7 @@ FROM ruby:2.7.2
 ADD Gemfile /app/
 ADD Gemfile.lock /app/
 WORKDIR /app
+RUN gem install bundler
 RUN bundle-install
 ADD . /app
 
