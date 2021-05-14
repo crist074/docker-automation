@@ -14,14 +14,22 @@ namespace Automation
         [ThreadStatic] private static ExtentTest test;
         private ExtentReports extent;
         [ThreadStatic] private static IWebDriver driver;
-        [ThreadStatic] private bool testPassed;
+        [ThreadStatic] private static bool testPassed;
         static string currentDirectory = @$"{Environment.CurrentDirectory}/../../../";
 
+        /// <summary>
+        /// Instantiate ExtentReport
+        /// </summary>
         [OneTimeSetUp]
         public void OneTimeSetUp(){
             extent = new ExtentReports();
         }
 
+        /// <summary>
+        /// Setup ExtentReports
+        /// Create new webdriver
+        /// Add test to ExtentReport reporter
+        /// </summary>
         [SetUp]
         public void Setup(){
             var html = new ExtentV3HtmlReporter(@$"{currentDirectory}../Report/ui.html");
@@ -31,7 +39,11 @@ namespace Automation
             test = extent.CreateTest($"{NUnit.Framework.TestContext.CurrentContext.Test.Name}");
         }
 
-
+        /// <summary>
+        /// Parameterized test case
+        /// Execute test case with a range of ints 0-9
+        /// </summary>
+        /// <param name="x"></param>
         [Test]
         [Parallelizable(ParallelScope.All)]
         public void ParameterizedTest([Range(0, 9)] int x){
@@ -41,6 +53,10 @@ namespace Automation
             testPassed = true;
         }
 
+        /// <summary>
+        /// Test reaching into a deep DOM to find an element
+        /// Verify displayed text
+        /// </summary>
         [Test]
         [Parallelizable]
         public void LargeDOM(){
@@ -56,6 +72,16 @@ namespace Automation
             
         }
 
+        /// <summary>
+        /// Navigates to psychologytoday.com
+        /// Searches for a Psychiatrist in the parameterized zip code
+        /// Filters by supported insurance
+        /// 
+        /// Pages through all returned entries and verifies insurance is found on the page
+        /// within supported insurance list
+        /// </summary>
+        /// <param name="nameOfInsurance">Name of insurance to filter by</param>
+        /// <param name="zipCode">Zip code to search</param>
         [Test]
         [Parallelizable]
         [TestCase("Cigna", "80601")]
@@ -81,6 +107,9 @@ namespace Automation
             testPassed = true;
         }
 
+        /// <summary>
+        /// Quit webdriver and pass/fail test
+        /// </summary>
         [TearDown]
         public void TearDown(){
             driver.Quit();
@@ -92,6 +121,9 @@ namespace Automation
             }
         }
 
+        /// <summary>
+        /// Flush ExtentReport to html file
+        /// </summary>
         [OneTimeTearDown]
         public void OneTimeTearDown(){
             extent.Flush();

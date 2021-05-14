@@ -16,18 +16,25 @@ namespace Automation
 {
     public class APITests
     {
-        [ThreadStatic] private RestClient client;
-        [ThreadStatic] private RestRequest request;
+        [ThreadStatic] private static RestClient client;
+        [ThreadStatic] private static RestRequest request;
         [ThreadStatic] private static ExtentTest test;
         private ExtentReports extent;
-        [ThreadStatic] private bool testPassed;
+        [ThreadStatic] private static bool testPassed;
         static string currentDirectory = @$"{Environment.CurrentDirectory}/../../../";
 
+        /// <summary>
+        /// Instantiate ExtentReport
+        /// </summary>
         [OneTimeSetUp]
         public void OneTimeSetUp(){
             extent = new ExtentReports();
         }
 
+        /// <summary>
+        /// Setup ExtentReports
+        /// Add test to ExtentReport reporter
+        /// </summary>
         [SetUp]
         public void Setup(){
             var html = new ExtentV3HtmlReporter(@$"{currentDirectory}../Report/api.html");
@@ -36,20 +43,26 @@ namespace Automation
             test = extent.CreateTest($"{NUnit.Framework.TestContext.CurrentContext.Test.Name}");
         }
 
-
+        /// <summary>
+        /// Parses "apitestcasesources.csv" for test cases
+        /// Verifies country code / postal code are valid
+        /// </summary>
+        /// <param name="testCase">APITestCaseSource object representing country code, zip code, and expected response code</param>
         [Test]
         [Parallelizable(ParallelScope.All)]
         [TestCaseSource(nameof(GetTestData))]
-        public void Test1(APITestCaseSource testCase){
+        public void ZipCodeValidator(APITestCaseSource testCase){
+            test.Info($"Code:{testCase.code}, Zip:{testCase.zip}, Status:{testCase.statusCode}");
             client = new RestClient("http://api.zippopotam.us");
             request = new RestRequest($"{testCase.code}/{testCase.zip}", Method.GET);
             var response = client.Execute(request);
-            Assert.AreEqual((int)response.StatusCode, testCase.statusCode);
+            Assert.AreEqual((int)response.StatusCode, int.Parse(testCase.statusCode));
 
             testPassed = true;
         }
 
         [Test]
+        [Parallelizable]
         public void JsonDeserialization(){
             client = new RestClient("https://api.publicapis.org/");
             request = new RestRequest("/entries", Method.GET);
@@ -67,6 +80,7 @@ namespace Automation
         }
 
         [Test]
+        [Parallelizable]
         public void GetRandomAPI(){
             client = new RestClient("https://api.publicapis.org/");
             request = new RestRequest("/random", Method.GET);
@@ -79,6 +93,7 @@ namespace Automation
         }
 
         [Test]
+        [Parallelizable]
         public void GetHealth(){
             client = new RestClient("https://api.publicapis.org/");
             request = new RestRequest("/health", Method.GET);
@@ -97,7 +112,7 @@ namespace Automation
             var response = client.Execute(request);
             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
             Console.WriteLine(response.Content);
-            
+
             testPassed = true;
         }
 
@@ -132,8 +147,8 @@ namespace Automation
 
         public class APITestCaseSource {
             public string code {get;set;}
-            public int zip {get;set;} 
-            public int statusCode {get;set;}
+            public string zip {get;set;} 
+            public string statusCode {get;set;}
         }
 
         public class Entry
