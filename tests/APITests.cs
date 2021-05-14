@@ -135,6 +135,26 @@ namespace Automation
             testPassed = true;
         }
 
+
+        /// <summary>
+        /// POST api test
+        /// **Resource not actually updated on server, but is faked
+        /// </summary>
+        [Test]
+        [Parallelizable]
+        public void POST(){
+            client = new RestClient("https://jsonplaceholder.typicode.com/");
+            request = new RestRequest("/posts", Method.POST);
+            request.AddJsonBody(new { title = "foo", body = "bar", userId = 1 });
+            request.AddHeader("Content-type", "application/json; charset=UTF-8");
+            var response = client.Execute(request);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
+            Console.WriteLine(response.Content);
+
+            testPassed = true;
+        }   
+
+
         [TearDown]
         public void TearDown()
         {
