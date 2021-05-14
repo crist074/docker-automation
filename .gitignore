@@ -186,3 +186,5 @@ tests/obj/Debug/net5.0/Automation.GeneratedMSBuildEditorConfig.editorconfig
 tests/obj/Debug/net5.0/Automation.genruntimeconfig.cache
 tests/obj/Debug/net5.0/Automation.pdb
 tests/obj/Debug/net5.0/ref/Automation.dll
+Report/api.html
+Report/ui.html
