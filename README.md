@@ -2,7 +2,7 @@
  
 CI/CD Demonstration with GitHub and Docker deployment to Heroku.
 
-Test execution performed by dotnet.
+Test execution performed by dotnet, Selenium, and NUnit.
 
 # How to Run tests
 1. Clone repository to local
