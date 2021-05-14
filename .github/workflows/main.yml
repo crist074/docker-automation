@@ -74,4 +74,4 @@ jobs:
         uses: actions/upload-artifact@v2.2.3
         with:
           name: test-report
-          path: /Report
+          path:  /home/runner/work/docker-automation/docker-automation/Report/
