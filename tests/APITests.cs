@@ -61,6 +61,10 @@ namespace Automation
             testPassed = true;
         }
 
+        /// <summary>
+        /// Test case with Json Deserialization
+        /// Read response and parse object
+        /// </summary>
         [Test]
         [Parallelizable]
         public void JsonDeserialization(){
@@ -79,6 +83,10 @@ namespace Automation
             testPassed = true;
         }
 
+        /// <summary>
+        /// Gets a random api
+        /// Verify 200 status code
+        /// </summary>
         [Test]
         [Parallelizable]
         public void GetRandomAPI(){
@@ -92,6 +100,11 @@ namespace Automation
             testPassed = true;
         }
 
+        /// <summary>
+        /// Get health of random api
+        /// Verify 200 status code
+        /// Verify api health returns as alive=true
+        /// </summary>
         [Test]
         [Parallelizable]
         public void GetHealth(){
@@ -100,10 +113,16 @@ namespace Automation
             var response = client.Execute(request);
             Console.WriteLine(response.Content);
             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.Content);
+            Assert.AreEqual(dict["alive"], "true");
 
             testPassed = true;
         }
 
+        /// <summary>
+        /// Get daily random cat fact
+        /// Verify 200 status code
+        /// </summary>
         [Test]
         [Parallelizable]
         public void CatFact(){
