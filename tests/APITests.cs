@@ -19,55 +19,85 @@ namespace Automation
         [ThreadStatic] private RestClient client;
         [ThreadStatic] private RestRequest request;
         [ThreadStatic] private static ExtentTest test;
-        private static ExtentReports extent;
+        private ExtentReports extent;
         [ThreadStatic] private bool testPassed;
         static string currentDirectory = @$"{Environment.CurrentDirectory}/../../../";
 
+        [OneTimeSetUp]
+        public void OneTimeSetUp(){
+            extent = new ExtentReports();
+        }
+
         [SetUp]
         public void Setup(){
-            var html = new ExtentV3HtmlReporter(@"E:\Github\docker-automation\Report\api.html");
-            extent = new ExtentReports();
+            var html = new ExtentV3HtmlReporter(@$"{currentDirectory}../Report/api.html");
             extent.AttachReporter(html);
             testPassed = false;
-            test = extent.CreateTest($"hi").Info("testing");
+            test = extent.CreateTest($"{NUnit.Framework.TestContext.CurrentContext.Test.Name}");
         }
 
 
         [Test]
-        [TestCaseSource(nameof(GetTestData))]
         [Parallelizable(ParallelScope.All)]
+        [TestCaseSource(nameof(GetTestData))]
         public void Test1(APITestCaseSource testCase){
             client = new RestClient("http://api.zippopotam.us");
             request = new RestRequest($"{testCase.code}/{testCase.zip}", Method.GET);
             var response = client.Execute(request);
             Assert.AreEqual((int)response.StatusCode, testCase.statusCode);
+
             testPassed = true;
         }
 
         [Test]
-        [Parallelizable]
-        public void Test2(){
+        public void JsonDeserialization(){
             client = new RestClient("https://api.publicapis.org/");
             request = new RestRequest("/entries", Method.GET);
             var response = client.Execute(request);
-            //Console.WriteLine(response.Content);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            Console.WriteLine(response.Content);
             Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(response.Content);
             List<Entry> entryList = new List<Entry>();
             foreach (var e in myDeserializedClass.entries){
                 entryList.Add(e);
                 Console.WriteLine(e.Link);
             }
-            testPassed = true;
 
+            testPassed = true;
+        }
+
+        [Test]
+        public void GetRandomAPI(){
+            client = new RestClient("https://api.publicapis.org/");
+            request = new RestRequest("/random", Method.GET);
+            request.AddQueryParameter("auth", "null");
+            var response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+
+            testPassed = true;
+        }
+
+        [Test]
+        public void GetHealth(){
+            client = new RestClient("https://api.publicapis.org/");
+            request = new RestRequest("/health", Method.GET);
+            var response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+
+            testPassed = true;
         }
 
         [Test]
         [Parallelizable]
-        public void Test3(){
+        public void CatFact(){
             client = new RestClient("https://cat-fact.herokuapp.com/");
             request = new RestRequest("/facts", Method.GET);
             var response = client.Execute(request);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
             Console.WriteLine(response.Content);
+            
             testPassed = true;
         }
 
@@ -78,7 +108,6 @@ namespace Automation
                 test.Fail("Failed");
             }
             else{
-                test.Log(Status.Pass, "Test pass");
                 test.Pass("Passed");
             }
         }
