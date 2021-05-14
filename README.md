@@ -18,3 +18,6 @@ https://dashboard.heroku.com/apps/the-internet-automation (clone of https://hub.
 
 # Public APIs
 https://github.com/public-apis/public-apis
+
+# Visual Studio Code
+https://code.visualstudio.com/
