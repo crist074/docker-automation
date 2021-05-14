@@ -15,6 +15,7 @@ namespace Automation
         private ExtentReports extent;
         [ThreadStatic] private static IWebDriver driver;
         [ThreadStatic] private bool testPassed;
+        static string currentDirectory = @$"{Environment.CurrentDirectory}/../../../";
 
         [OneTimeSetUp]
         public void OneTimeSetUp(){
@@ -23,7 +24,7 @@ namespace Automation
 
         [SetUp]
         public void Setup(){
-            var html = new ExtentV3HtmlReporter(@"E:\Github\docker-automation\Report\ui.html");
+            var html = new ExtentV3HtmlReporter(@$"{currentDirectory}../Report/ui.html");
             extent.AttachReporter(html);
             driver = new WebDriver().driver;
             testPassed = false;
@@ -57,12 +58,13 @@ namespace Automation
 
         [Test]
         [Parallelizable]
-        public void VerifyInsuranceFilter(string nameOfInsurance = "Cigna"){
+        [TestCase("Cigna", "80601")]
+        public void VerifyInsuranceFilter(string nameOfInsurance, string zipCode){
 
             driver.Navigate().GoToUrl("https://www.psychologytoday.com/");
             driver.FindElement(By.XPath("//div[contains(@class, 'menu large')]")).Click();
             driver.FindElement(By.XPath("//ul[@class='active']//li[contains(text(), 'Psychiatrists')]")).Click();
-            driver.FindElement(By.XPath("//input[contains(@placeholder, 'City or Zip') and contains(@class, 'large')]")).SendKeys("80601");
+            driver.FindElement(By.XPath("//input[contains(@placeholder, 'City or Zip') and contains(@class, 'large')]")).SendKeys(zipCode);
             driver.FindElement(By.XPath("//input[contains(@placeholder, 'City or Zip') and contains(@class, 'large')]")).SendKeys(Keys.Enter);
             driver.FindElement(By.XPath($"//a[contains(text(), '{nameOfInsurance}')]")).Click();
             while(driver.FindElements(By.XPath("//a[contains(@class, 'btn-default btn-next')]")).Count != 0){
