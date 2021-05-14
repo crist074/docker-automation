@@ -21,3 +21,6 @@ https://github.com/public-apis/public-apis
 
 # Visual Studio Code
 https://code.visualstudio.com/
+
+# Dotnet sdk
+https://dotnet.microsoft.com/download
