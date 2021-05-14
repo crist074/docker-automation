@@ -1,4 +1,4 @@
-# Automation
+# QA Automation Example
  
 CI/CD Demonstration with GitHub and Docker deployment to Heroku.
 
