@@ -155,6 +155,23 @@ namespace Automation
         }   
 
 
+        /// <summary>
+        /// DELETE api test
+        /// **Resource not actually updated on server, but is faked
+        /// </summary>
+        [Test]
+        [Parallelizable]
+        public void DELETE(){
+            client = new RestClient("https://jsonplaceholder.typicode.com/");
+            request = new RestRequest("/posts/1", Method.DELETE);
+            var response = client.Execute(request);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            Console.WriteLine(response.Content);
+
+            testPassed = true;
+        }   
+
+
         [TearDown]
         public void TearDown()
         {
