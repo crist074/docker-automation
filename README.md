@@ -4,11 +4,18 @@ CI/CD Demonstration with GitHub and Docker deployment to Heroku.
 
 Test execution performed by dotnet, Selenium, and NUnit.
 
-# How to Run tests
+# How to Run tests manually
 1. Clone repository to local
 2. Navigate to `/tests`
 3. Run `dotnet test` in powershell
 4. Results will be placed in `/Reports`
+
+# Test Automation
+Tests are also run automatically through GitHub actions. (https://github.com/crist074/docker-automation/actions)
+
+Upon code commit to the repo:
+1. Web app is rebuilt and deployed to Heroku (https://the-internet-automation.herokuapp.com/)
+2. ```dotnet test``` is run against a combination of production code and the deployed app
 
 # UITests.cs
 1. ParameterizedTest();
