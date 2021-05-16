@@ -39,6 +39,8 @@ https://the-internet-automation.herokuapp.com/
 https://github.com/public-apis/public-apis
 
 # Visual Studio Code
+```/tests``` contains the VSCode solution and workspace if you want to edit the code.
+
 https://code.visualstudio.com/
 
 # Dotnet sdk
