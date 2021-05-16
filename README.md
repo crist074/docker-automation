@@ -39,7 +39,7 @@ https://the-internet-automation.herokuapp.com/
 https://github.com/public-apis/public-apis
 
 # Visual Studio Code
-```/tests``` contains the VSCode solution and workspace if you want to edit the code.
+```/tests``` contains the VSCode solution and workspace if you want to edit the code. XML documentation of each test case is also included in the .cs files.
 
 https://code.visualstudio.com/
 
