@@ -9,6 +9,8 @@ using AventStack.ExtentReports;
 
 namespace Automation
 {
+    [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class UITests
     {
         [ThreadStatic] private static ExtentTest test;
@@ -70,6 +72,101 @@ namespace Automation
 
             testPassed = true;
             
+        }
+
+        [Test]
+        [Parallelizable]
+        public void LoginAndLogout(){
+        
+            Utility u = new Utility();
+            string target = u.LoadJsonConfig("uitestconfig.json", "deployed-the-internet");
+            driver.Navigate().GoToUrl(target);
+
+            var ByLoginPage = By.XPath("//a[@href='/login']");
+            var ByLoginPageHeader = By.XPath("//h2");
+            var ByLoginPageSubheader= By.XPath("//h4");
+            var ByLoginPageUsername = By.Id("username");
+            var ByLoginPagePassword = By.Id("password");
+            var ByLoginPageSubmitButton = By.XPath("//button[@type='submit']");
+            var ByLoginPageFlash = By.Id("flash");
+            var ByLoginPageLogoutButton = By.XPath("//a[contains(@class, 'button')]//i[contains(text(), 'Logout')]");
+
+            string loggedInSubheader = "Welcome to the Secure Area. When you are done click logout below.";
+
+            driver.FindElement(ByLoginPage).Click();
+ 
+            Assert.True(driver.FindElement(ByLoginPageHeader).Text == "Login Page");
+            driver.FindElement(ByLoginPageUsername).SendKeys("tomsmith");
+            driver.FindElement(ByLoginPagePassword).SendKeys("SuperSecretPassword!");
+            driver.FindElement(ByLoginPageSubmitButton).Click();
+
+            Assert.True(driver.FindElement(ByLoginPageFlash).Displayed);
+            Assert.True(driver.FindElement(ByLoginPageFlash).Text.Contains("You logged into a secure area!"));
+            Assert.True(driver.FindElement(ByLoginPageSubheader).Text.Trim() == loggedInSubheader);
+
+            driver.FindElement(ByLoginPageLogoutButton).Click();
+            Assert.True(driver.FindElement(ByLoginPageFlash).Text.Contains("You logged out of the secure area!"));
+            Assert.True(driver.FindElement(ByLoginPageHeader).Text == "Login Page");
+
+            testPassed = true;
+        }
+
+        [Test]
+        [Parallelizable]
+        public void FailedLogin_IncorrectUsername(){
+        
+            Utility u = new Utility();
+            string target = u.LoadJsonConfig("uitestconfig.json", "deployed-the-internet");
+            driver.Navigate().GoToUrl(target);
+
+            var ByLoginPage = By.XPath("//a[@href='/login']");
+            var ByLoginPageHeader = By.XPath("//h2");
+            var ByLoginPageSubheader= By.XPath("//h4");
+            var ByLoginPageUsername = By.Id("username");
+            var ByLoginPagePassword = By.Id("password");
+            var ByLoginPageSubmitButton = By.XPath("//button[@type='submit']");
+            var ByLoginPageFlash = By.Id("flash");
+
+            driver.FindElement(ByLoginPage).Click();
+ 
+            Assert.True(driver.FindElement(ByLoginPageHeader).Text == "Login Page");
+            driver.FindElement(ByLoginPageUsername).SendKeys("invalid");
+            driver.FindElement(ByLoginPagePassword).SendKeys("SuperSecretPassword!");
+            driver.FindElement(ByLoginPageSubmitButton).Click();
+
+            Assert.True(driver.FindElement(ByLoginPageFlash).Displayed);
+            Assert.True(driver.FindElement(ByLoginPageFlash).Text.Contains("Your username is invalid!"));
+
+            testPassed = true;
+        }
+
+        [Test]
+        [Parallelizable]
+        public void FailedLogin_IncorrectPassword(){
+        
+            Utility u = new Utility();
+            string target = u.LoadJsonConfig("uitestconfig.json", "deployed-the-internet");
+            driver.Navigate().GoToUrl(target);
+
+            var ByLoginPage = By.XPath("//a[@href='/login']");
+            var ByLoginPageHeader = By.XPath("//h2");
+            var ByLoginPageSubheader= By.XPath("//h4");
+            var ByLoginPageUsername = By.Id("username");
+            var ByLoginPagePassword = By.Id("password");
+            var ByLoginPageSubmitButton = By.XPath("//button[@type='submit']");
+            var ByLoginPageFlash = By.Id("flash");
+
+            driver.FindElement(ByLoginPage).Click();
+ 
+            Assert.True(driver.FindElement(ByLoginPageHeader).Text == "Login Page");
+            driver.FindElement(ByLoginPageUsername).SendKeys("tomsmith");
+            driver.FindElement(ByLoginPagePassword).SendKeys("invalid");
+            driver.FindElement(ByLoginPageSubmitButton).Click();
+
+            Assert.True(driver.FindElement(ByLoginPageFlash).Displayed);
+            Assert.True(driver.FindElement(ByLoginPageFlash).Text.Contains("Your password is invalid!"));
+
+            testPassed = true;
         }
 
         /// <summary>

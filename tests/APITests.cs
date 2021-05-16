@@ -14,6 +14,8 @@ using AventStack.ExtentReports;
 
 namespace Automation
 {
+    [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class APITests
     {
         [ThreadStatic] private static RestClient client;
