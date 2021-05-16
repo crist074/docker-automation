@@ -74,6 +74,9 @@ namespace Automation
             
         }
 
+        /// <summary>
+        /// Tests login and logout successful functionality
+        /// </summary>
         [Test]
         [Parallelizable]
         public void LoginAndLogout(){
@@ -111,6 +114,9 @@ namespace Automation
             testPassed = true;
         }
 
+        /// <summary>
+        /// Tests invalid login with a bad username
+        /// </summary>
         [Test]
         [Parallelizable]
         public void FailedLogin_IncorrectUsername(){
@@ -140,6 +146,9 @@ namespace Automation
             testPassed = true;
         }
 
+        /// <summary>
+        /// Test invalid login with bad password
+        /// </summary>
         [Test]
         [Parallelizable]
         public void FailedLogin_IncorrectPassword(){
