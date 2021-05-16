@@ -14,6 +14,9 @@ Test execution performed by dotnet, Selenium, and NUnit.
 1. ParameterizedTest();
 2. LargeDOM();
 3. VerifyInsuranceFilter(string nameOfInsurance, string zipCode);
+4. LoginAndLogout();
+5. FailedLogin_IncorrectUsername();
+6. FailedLogin_IncorrectPassword();
 
 # APITests.cs
 1. ZipCodeValidator(APITestCaseSource testCase);
